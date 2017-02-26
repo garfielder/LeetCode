@@ -10,7 +10,7 @@
 using namespace std;
 
 
-
+// https://leetcode.com/problems/median-of-two-sorted-arrays/?tab=Solutions
 class Solution {
 public:
 	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
@@ -44,7 +44,7 @@ public:
 			int j = (m + n + 1) / 2 - i;
 
 
-			if ( (i<m) && (M[i] <= N[j - 1]))
+			if ( (i<m) && (M[i] < N[j - 1]))
 				mleft = mleft + 1;
 			else if ( (i>0) && (N[j] < M[i - 1])) 
 				mleft = mleft - 1;
@@ -55,12 +55,12 @@ public:
 
 				if (i == 0) maxLeft = N[j - 1];
 				else if (j == 0) maxLeft = M[i - 1];
-				else maxLeft = max(M[i - 1], N[i - 1]);
+				else maxLeft = max(M[i - 1], N[j - 1]);
 
 				if ((m + n) % 2)
 					return maxLeft;
 
-				if (i == n) minRight = N[j];
+				if (i == m) minRight = N[j];
 				else if (j == n) minRight = M[i];
 				else minRight = min(M[i], N[j]);
 
