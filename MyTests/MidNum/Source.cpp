@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include <cassert>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,67 +14,65 @@ using namespace std;
 class Solution {
 public:
 	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-		vector<int>& M = nums1;
-		vector<int>& N = nums2;
+		// Make sure num(M) <= num(N)
+		vector<int>& M = nums1.size() <= nums2.size() ? nums1 : nums2;
+		vector<int>& N = nums1.size() > nums2.size() ? nums1 : nums2;
 
-		assert(!nums1.empty());
-		assert(!nums2.empty());
-
-		int mleft = 0; 
-		int mright = M.size() - 1;
-
-		int nleft = 0;
-		int nright = N.size() - 1;
-
-		while (1)
-		{
-			if ((mleft == mright) && (nleft == nright))
-			{
-				// both arrary has one item left
-				return static_cast<double>(M[mleft] + N[nleft]) / 2;
-			}
-
-			int mMid = MidValue(M, mleft, mright);
-			int nMid = MidValue(N, nleft, nright);
-
-			int mShrink = (mright - mleft + 1) / 2;
-			int nShrink = (nright - nleft + 1) / 2;
-			int mnShrink = mShrink < nShrink ? mShrink : nShrink;
-
-			if (mMid < nMid) {
-				// Left shrink
-				mleft += mnShrink;
-				mright = mright;
-
-				// right shrink
-				nleft = nleft;
-				nright -= mnShrink;
-			}
-			else if (mMid < nMid) {
-				// right shrink
-				mleft = mleft;
-				mright -= mnShrink;
-
-				nleft -= mnShrink;
-				nright = nright; 
+		if (M.empty()) {
+			assert(!N.empty());
+			if (N.size() % 2 == 0) {
+				int  i = N.size() / 2;
+				return (N[i] + N[i - 1]) / 2.0;
 			}
 			else {
-				return static_cast<double>(mMid) / 2;
+				return N[N.size() / 2];
 			}
 		}
 
+		const int m = M.size();
+		const int n = N.size();
+
+
+
+		int mleft = 0; 
+		int mright = M.size();
+
+
+		while (mleft <= mright)
+		{
+			int i = (mleft + mright) / 2;
+			int j = (m + n + 1) / 2 - i;
+
+
+			if ( (i<m) && (M[i] <= N[j - 1]))
+				mleft = mleft + 1;
+			else if ( (i>0) && (N[j] < M[i - 1])) 
+				mleft = mleft - 1;
+			else {
+				// result is found 
+				int maxLeft;
+				int minRight;
+
+				if (i == 0) maxLeft = N[j - 1];
+				else if (j == 0) maxLeft = M[i - 1];
+				else maxLeft = max(M[i - 1], N[i - 1]);
+
+				if ((m + n) % 2)
+					return maxLeft;
+
+				if (i == n) minRight = N[j];
+				else if (j == n) minRight = M[i];
+				else minRight = min(M[i], N[j]);
+
+				return (maxLeft + minRight) / 2.0;
+			}
+
+
+ 		}
+
 		return 0.0;
 	}
-private:
-	int MidValue(vector<int> &vec, int left, int right)
-	{
-		assert(left <= right);
-		// ÆæÊý
-		if ((left + right) % 2 == 0)
-			return vec[(left + right) / 2] * 2;
-		else
-			return vec[(left + right) / 2] + vec[(left + right) / 2 + 1];
-	}
+
 };
 
 void StrToVec(string str, vector<int>& vec)
