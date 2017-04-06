@@ -1,0 +1,20 @@
+// a test case comes after a blankline
+---
+abcdea
+---
+a
+---
+babad
+---
+cbbd
+---
+a
+---  
+aba
+---
+abad
+---
+abcbcba
+---
+
+// end of tests
