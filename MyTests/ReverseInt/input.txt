@@ -1,0 +1,16 @@
+// a test case comes after a blankline
+---
+1563847412
+---
+123
+---
+-123
+---
+0
+---
+31325155
+---
+-1
+---
+1
+// end of tests
