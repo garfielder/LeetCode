@@ -1,0 +1,12 @@
+// a test case comes after a blankline
+---
+ABC 3
+---
+PAYPALISHIRING 3
+---
+PAYPALISHIRING 20
+---
+PAYPALISHIRING  10
+---
+
+// end of tests
