@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReverseInt", "ReverseInt\Re
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myAtoi", "myAtoi\myAtoi.vcxproj", "{959334BF-FF1D-4276-B6A2-C48028EA1479}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IsPalin", "IsPalin\IsPalin.vcxproj", "{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{959334BF-FF1D-4276-B6A2-C48028EA1479}.Release|x64.Build.0 = Release|x64
 		{959334BF-FF1D-4276-B6A2-C48028EA1479}.Release|x86.ActiveCfg = Release|Win32
 		{959334BF-FF1D-4276-B6A2-C48028EA1479}.Release|x86.Build.0 = Release|Win32
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Debug|x64.ActiveCfg = Debug|x64
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Debug|x64.Build.0 = Debug|x64
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Debug|x86.ActiveCfg = Debug|Win32
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Debug|x86.Build.0 = Debug|Win32
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Release|x64.ActiveCfg = Release|x64
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Release|x64.Build.0 = Release|x64
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Release|x86.ActiveCfg = Release|Win32
+		{2D701BA1-17A5-4ED9-B354-DF7FFE756D52}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

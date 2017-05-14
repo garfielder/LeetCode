@@ -48,7 +48,7 @@ public:
 		}
 
 		if (-1 == sign) res = -res;
-		return res;
+		return static_cast<int>(res);
 	}
 };
 
