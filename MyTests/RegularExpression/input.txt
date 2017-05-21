@@ -1,5 +1,7 @@
 // a test case comes after a blankline
 ---
+aaa ab*a*c*a"
+---
 aa a
 ---
 aa aa
@@ -11,4 +13,9 @@ aa .*
 ab .*
 ---
 aab c*a*b*
+---
+acbacb a.*b
+---
+BLANK .*
+
 // end of tests
