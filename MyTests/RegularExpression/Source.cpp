@@ -16,102 +16,97 @@ using namespace std;
 
 class Solution {
 public:
-	enum STATE {START, NORMAL, STAR, PASS, FAIL};
+	enum STATE {START, NORMAL, STAR, PASS, FAIL, END};
 
-	Solution() :
-		_state(START),
-		_i(0),
-		_j(0) {}
+	Solution()		
+	{_state = START; }
 
-	void Start(const string s, const string p ) {
-		if ('*' == p[_j])
-			_state = FAIL;
-		else {
-			_state = NORMAL;
-		}
+	void Start(int& i, int& j ) {
+		_state = NORMAL;
 	}
 
-	void Normal(const string s, const string  p) {
-		if ((s.size() == _i) && (p.size() == _j))
-			_state = PASS;	
-		else if ((_j+1 < p.size()) && (p[_j+1] == '*') ) {
+	void Normal(int& i, int& j) {
+		if (IsEnd(i, j))
+			_state = END;
+		else if (IsLoopPos(j)) {  // go to  star
 			_state = STAR;
-			_j++;
 		}
-		else if (s.size() == _i) // s ends
-			_state = FAIL;
-		else if (!char_equal(s[_i], p[_j])) {
-			if (_stack.empty())  // nothing to recover
+		else if (char_equal(s[i], p[j])) {
+			i = NextI(i);
+			j = NextJ(j);
+		}
+		else if (!char_equal(s[i], p[j])) {
+			if (_stack.empty())
 				_state = FAIL;
 			else {
-				_i = _stack.top().first;
-				_j = _stack.top().second;
+				i = _stack.top().first;
+				j = _stack.top().second;
 				_stack.pop();
 				_state = STAR;
 			}
 		}
-
-		else{ // my action
-			assert(char_equal(s[_i], p[_j]));
-			_i++;
-			_j++;
-		}
-	}
-
-	void Star (const string s, const string  p) {
-		assert(p[_j] == '*');
-		char pre = p[_j - 1];
-
-		if (_j + 1 == p.size()) {
-			if (char_equal(s[_i], pre)) _state = PASS;
-			else _state = FAIL;
-
-		}
-			
 		else {
-			char next = p[_j + 1];
-			if (s.size() == _i)
-			{
-				_state = FAIL;
-			}
-			else if (matchNext(s, p, _j) > _j)
-			{
-				// push into stack
-				_state = NORMAL;
-				
-				if ( (_i +1 < s.size()) && char_equal(s[_i], pre)) 
-					_stack.push(make_pair(_i+1, _j));
-				_j = matchNext(s, p, _j);
-			}
-			else if (char_equal(s[_i], pre)){
-				// Keep star
-				_i++;
-			}
-			else { // mismatch
-				_j++;
-				_state = NORMAL;
-			}
+			assert(0);
+		}
+	}
+
+	void Star (int &i, int &j) {
+		assert(p[j+1] == '*');
+		char pre = p[j];
+
+		// Can be self-looped
+		if (IsEnd(i, j))
+		{	
+			_state = END;
+		}
+		else {
+			if (char_equal(s[i], p[j]))
+				_stack.push(make_pair(i + 1, j));
+			_state = NORMAL;
+			j = NextJ(j);
 		}
 
 	}
-	bool isMatch(string s, string p) {
-		_state = START;  
-		int i(0); // index of string
-		int j(0); // index of pattern
 
+	void End(int& i, int& j)
+	{
+		if ((s.size() == i) && (p.size() == j))
+			_state = PASS;
+		else if ((s.size() != i) && (p.size() == j)) {
+			 Revisit(i, j);
+		}
+		else if ((s.size() == i) && (p.size() != j))
+		{
+			while (IsLoopPos(j) && (j < p.size())) j = NextJ(j);
+
+			if (p.size() == j) _state = PASS;
+			else {
+
+				Revisit(i, j);
+			}
+		}
+	}
+	bool isMatch(string ss, string pp) {
+		_state = START;  
+		this->s = ss;
+		this->p = pp;
+		int i(0), j(0);
 		// Main loop
 		while ((_state != PASS) && (_state != FAIL) )
 		{
 			switch (_state)
 			{
 			case START:
-				Start(s, p);
+				Start(i, j);
 				break;
 			case NORMAL:
-				Normal(s, p);
+				Normal(i, j);
 				break;
 			case STAR:
-				Star(s, p);
+				Star(i, j);
+				break;
+			case END:
+				End(i, j);
 				break;
 			default:
 				assert(0);
@@ -120,6 +115,18 @@ public:
 
 		return PASS == _state;
 	}
+
+	void Revisit(int& i, int& j) {
+		if (_stack.empty())
+			_state = FAIL;
+		else {
+			i = _stack.top().first;
+			j = _stack.top().second;
+			_stack.pop();
+			_state = STAR;
+		}
+	}
+
 private:
 	inline bool char_equal(char ch, char reCh) {
 		if ('.' == reCh) 
@@ -128,21 +135,28 @@ private:
 			return ch == reCh;
 	}
 
-	int  matchNext(string s, string p, int j) {
-		while ((j + 1 < p.size()) && (s[_i] != p[j+1]))
-		{
-			if ((j + 2 < p.size()) && p[j + 2] == '*')
-				j = j + 2;
-			else
-				return -1;
-		}
-		if (j + 1 == p.size()) return -1;
-		else return j + 1;
+
+	int NextI(int i) { return i + 1; }
+	int NextJ(int j) {
+		if (IsLoopPos(j))
+			return j + 2;
+		else
+			return j + 1;
+
 	}
+	bool IsLoopPos(int j){
+		return (j + 1 < p.size()) && ('*' == p[j + 1]);
+	}
+
+	bool IsEnd(const int i, const int j) {
+		return (i >= s.size()) || (j >= p.size());
+	}
+
+
 private:
 	STATE _state;
-	int   _i;
-	int   _j;
+	std::string s;
+	std::string p;
 	stack<pair< int, int> > _stack;
 };
 
