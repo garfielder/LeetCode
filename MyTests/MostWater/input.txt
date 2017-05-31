@@ -1,0 +1,4 @@
+// a test case comes after a blankline
+---
+5 3 6 4 7
+// end of tests
