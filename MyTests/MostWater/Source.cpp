@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #include <map>
 #include <string>
 #include <vector>
@@ -15,7 +16,19 @@ using namespace std;
 class Solution {
 public:
 	int maxArea(vector<int>& height) {
-		return 0;
+		int i(0);
+		int j(height.size() - 1);
+
+		int maxVal(0);
+		while (i < j)
+		{
+			int tmp = std::min(height[i], height[j])  * (j - i);
+			if (tmp > maxVal) maxVal = tmp;
+			
+			height[i] < height[j] ? i++ : j--;
+		}
+
+		return maxVal;
 	}
 };
 
