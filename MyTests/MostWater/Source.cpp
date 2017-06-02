@@ -1,5 +1,9 @@
 /*
 * https://leetcode.com/problems/container-with-most-water/#/description
+* 
+* start from the two side, move left side and right side towards the middle. 
+* suppose <i, j> are temporary golden value,   give k, i < k <j ,  k will not combine with any index prior to i
+* because (i', k) will be less than (k, j)
 */
 #include <iostream>
 #include <fstream>
