@@ -8,7 +8,7 @@ projRoot = r"C:\Users\richli\Source\Repos\LeetCode\MyTests"
 print projRoot
 
 tempProj = "MaxPrefix"
-newProj  = "NewTest"
+newProj  = "ThreeSum"
 
 
 ##
